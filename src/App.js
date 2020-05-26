@@ -9,7 +9,10 @@ function App() {
     .show("K000388")
     .votes()
     .fetch()
-
+    .then((filteredResponse) => {
+      console.log(filteredResponse);
+    })
   return null
 }
+
 export default App

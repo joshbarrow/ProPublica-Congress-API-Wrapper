@@ -11,29 +11,45 @@ export default class Fetch {
     }
   }
 
-  fetch(query, mode) {
+  async fetch(query, mode) {
     const { congress, chamber, state, district, id } = query
+    let response
+
     switch(mode) {
     case "new":
-      return this.fetchNew()
+      response = await this.fetchNew()
+      break
 
     case "district":
-      return this.fetchByStateAndDistrict(chamber, state, district)
+      response = await this.fetchByStateAndDistrict(chamber, state, district)
+      break
 
     case "show":
-      return this.fetchOne(id)
+      response = await this.fetchOne(id)
+      break
 
     case "votes":
-      return this.fetchVotes(id)
+      response = await this.fetchVotes(id)
+      break
 
     case "leaving":
-      return this.fetchLeaving(congress, chamber)
+      response = await this.fetchLeaving(congress, chamber)
+      break
 
     case "index":
-      return this.fetchAll(congress, chamber)
+      response = await this.fetchAll(congress, chamber)
+      break
 
     default:
       throw `Unknown mode ${mode}`
+    }
+
+    this.query = {}
+    this.request.responseFiltered = response
+
+    return {
+      data: response,
+      request: this.request,
     }
   }
 
@@ -51,7 +67,7 @@ export default class Fetch {
   async fetchAll(congress, chamber) {
     const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/${congress}/${chamber}/members.json`)
     const response = this.request.response = responseFull.data.results[0].members
-    const responseFiltered = response.filter(member => {
+    return response.filter(member => {
       if (this.query.party) {
         if (member.party !== this.query.party) return false
       }
@@ -62,58 +78,30 @@ export default class Fetch {
 
       return true
     })
-    this.query = {}
-    this.request.responseFiltered = responseFiltered
-    return responseFiltered
   }
 
   async fetchOne() {
     const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${this.id}.json`)
-    const response = this.request.response = responseFull.data.results
-
-    this.query = {}
-    this.request.responseFiltered = response
-    return response
+    return this.request.response = responseFull.data.results
   }
-
-
 
   async fetchNew() {
     const responseFull = await this._fetch("https://api.propublica.org/congress/v1/members/new.json")
-    const response = this.request.response = responseFull.data.results
-
-    this.query = {}
-    this.request.responseFiltered = response
-    return response
+    return this.request.response = responseFull.data.results
   }
 
   async fetchVotes(id) {
     const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${id}/votes.json`)
-    const response = this.request.response = responseFull.data.results
-
-    this.query = {}
-    this.request.responseFiltered = response
-    return response
+    return this.request.response = responseFull.data.results[0].votes
   }
 
   async fetchByStateAndDistrict(chamber, state, district) {
     const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${chamber}/${state}/${district}/current.json`)
-    const response = this.request.response = responseFull.data.results
-
-
-    this.query = {}
-    this.request.responseFiltered = response
-    return response
+    return this.request.response = responseFull.data.results
   }
 
   async fetchLeaving(congress, chamber) {
     const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/${congress}/${chamber}/members/leaving.json`)
-    const response = this.request.response = responseFull.data.results
-
-
-    this.query = {}
-    this.resopnse.responseFiltered = response
-    return response
+    return this.request.response = responseFull.data.results
   }
-
 }

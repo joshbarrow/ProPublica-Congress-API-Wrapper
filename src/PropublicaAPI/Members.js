@@ -6,10 +6,10 @@ export default class Members {
     this.apiKey = apiKey
     this.query = {}
     this._mode = null
-    this._fetch = new Fetch(this.apiKey)
   }
 
   fetch() {
+    this._fetch = new Fetch(this.apiKey)
     return this._fetch.fetch(this.query, this.mode)
   }
 
