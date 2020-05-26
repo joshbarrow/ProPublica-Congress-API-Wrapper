@@ -1,26 +1,15 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import PropublicaAPI from './PropublicaAPI'
+
+const propublicaAPI = new PropublicaAPI('8ZF7cG4fkrseYNv1rGE3H6V749DE2ttLcaS8Ryw5')
+// const propublicaAPI2 = new PropublicaAPI(
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  propublicaAPI.Members
+    .show("K000388")
+    .votes()
+    .fetch()
 
-export default App;
+  return null
+}
+export default App
