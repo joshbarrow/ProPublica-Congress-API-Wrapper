@@ -8,9 +8,16 @@ export default class Members {
     this._mode = null
   }
 
-  fetch() {
+  async fetch() {
     this._fetch = new Fetch(this.apiKey)
-    return this._fetch.fetch(this.query, this.mode)
+    const response = await this._fetch.fetch(this.query, this.mode)
+    console.log(response)
+    return response
+  }
+
+  before(before) {
+    this.query.before = before
+    return this
   }
 
   congress(congress) {

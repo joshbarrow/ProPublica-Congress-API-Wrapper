@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 
 export default class Fetch {
   constructor(apiKey) {
@@ -29,7 +30,7 @@ export default class Fetch {
       break
 
     case "votes":
-      response = await this.fetchVotes(id)
+      response = await this.fetchVotes(id, query)
       break
 
     case "leaving":
@@ -46,7 +47,6 @@ export default class Fetch {
 
     this.query = {}
     this.request.responseFiltered = response
-
     return {
       data: response,
       request: this.request,
@@ -90,9 +90,16 @@ export default class Fetch {
     return this.request.response = responseFull.data.results
   }
 
-  async fetchVotes(id) {
+  async fetchVotes(id, query) {
     const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${id}/votes.json`)
-    return this.request.response = responseFull.data.results[0].votes
+    const response = this.request.response = responseFull.data.results[0].votes
+    return response.filter( vote => {
+      if (query.before) {
+        if (!moment(vote.date).isBefore(query.before)) return false
+      }
+
+      return true
+    })
   }
 
   async fetchByStateAndDistrict(chamber, state, district) {

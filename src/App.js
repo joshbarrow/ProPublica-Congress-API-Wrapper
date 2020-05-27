@@ -8,9 +8,10 @@ function App() {
   propublicaAPI.Members
     .show("K000388")
     .votes()
+    .before("03/26/2020")
     .fetch()
-    .then((filteredResponse) => {
-      console.log(filteredResponse);
+    .then(response => {
+      console.log(response);
     })
   return null
 }
