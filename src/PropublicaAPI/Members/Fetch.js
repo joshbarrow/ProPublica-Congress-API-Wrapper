@@ -94,8 +94,13 @@ export default class Fetch {
     const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${id}/votes.json`)
     const response = this.request.response = responseFull.data.results[0].votes
     return response.filter( vote => {
+
       if (query.before) {
         if (!moment(vote.date).isBefore(query.before)) return false
+      }
+
+      if (query.after) {
+        if (!moment(vote.date).isAfter(query.after)) return false
       }
 
       return true

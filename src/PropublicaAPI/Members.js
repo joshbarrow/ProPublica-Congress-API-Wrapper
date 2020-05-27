@@ -11,12 +11,16 @@ export default class Members {
   async fetch() {
     this._fetch = new Fetch(this.apiKey)
     const response = await this._fetch.fetch(this.query, this.mode)
-    console.log(response)
     return response
   }
 
   before(before) {
     this.query.before = before
+    return this
+  }
+
+  after(after) {
+    this.query.after = after
     return this
   }
 
