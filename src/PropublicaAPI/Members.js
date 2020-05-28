@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Fetch from './Members/Fetch'
 
 export default class Members {
@@ -29,6 +28,11 @@ export default class Members {
     return this
   }
 
+  position(position) {
+    this.query.position = position
+    return this
+  }
+
   state(state) {
     this.query.state = state
     return this
@@ -39,10 +43,25 @@ export default class Members {
     return this
   }
 
+  compareVotes(firstMemberID, secondMemberID) {
+    this._mode = "compareVotes"
+    this.query.firstMemberID = firstMemberID
+    this.query.secondMemberID = secondMemberID
+    return this
+  }
+
+  compareSponsorships(firstMemberID, secondMemberID) {
+    this._mode = "compareSponsorships"
+    this.query.firstMemberID = firstMemberID
+    this.query.secondMemberID = secondMemberID
+    return this
+  }
+
   get mode() {
     if (this._mode) return this._mode
     if (this.query.district) return "district"
     if (this.query.id) return "show"
+    if (this.query.position) return "position"
 
     return "index"
   }
@@ -72,6 +91,13 @@ export default class Members {
     return this
   }
 
+  cosponsoredByMember(id, type) {
+    this._mode = "cosponsored"
+    this.query.id = id
+    this.query.type = type
+    return this
+  }
+
   new() {
     this._mode = "new"
     return this
@@ -79,6 +105,47 @@ export default class Members {
 
   leaving() {
     this._mode = "leaving"
+    return this
+  }
+
+  expenses(id, year, quarter) {
+    this._mode = "expenses"
+    this.query.id = id
+    this.query.year = year
+    this.query.quarter = quarter
+    return this
+  }
+
+  quarterlyMemberExpensesByCategory(id, category) {
+    this._mode = "quarterlyMemberExpensesByCategory"
+    this.query.id = id
+    this.query.category = category
+    return this
+  }
+
+  quarterlyMemberExpenses(id, year, quarter) {
+    this._mode = "quarterlyMemberExpenses"
+    this.query.id = id
+    this.query.year = year
+    this.query.quarter = quarter
+    return this
+  }
+
+  quarterlyOfficeExpensesByCategory(category, year, quarter) {
+    this._mode = "quarterlyOfficeExpensesByCategory"
+    this.query.category = category
+    this.query.year = year
+    this.query.quarter = quarter
+    return this
+  }
+
+  privatelyFundedTravel() {
+    this._mode = "privatelyFundedTravel"
+    return this
+  }
+
+  privatelyFundedTravelByMember() {
+    this._mode = "privatelyFundedTravelByMember"
     return this
   }
 
