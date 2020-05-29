@@ -1,4 +1,4 @@
-import Request from './Bills/Request'
+import Request from './Request'
 
 export default class Bills {
   constructor(apiKey) {

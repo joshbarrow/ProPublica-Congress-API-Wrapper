@@ -1,4 +1,4 @@
-import Request from './Members/Request'
+import Request from './Request'
 
 export default class Members {
   constructor(apiKey) {
