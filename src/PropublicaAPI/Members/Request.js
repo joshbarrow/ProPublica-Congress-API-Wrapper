@@ -1,15 +1,10 @@
 import axios from 'axios'
 import moment from 'moment'
+import PropublicaAPIRequest from '../PropublicaAPIRequest'
 
-export default class Fetch {
+export default class Request extends PropublicaAPIRequest {
   constructor(apiKey) {
-    this.apiKey = apiKey
-    this.request = {
-      url: null,
-      response: null,
-      responseFull: null,
-      responseFiltered: null,
-    }
+    super(apiKey)
   }
 
   async fetch(query, mode) {
@@ -105,19 +100,9 @@ export default class Fetch {
     }
   }
 
-  async _fetch(url) {
-    this.request.url = url
-    this.request.responseFull = await axios.get(url, {
-      headers: {
-        'X-API-Key': this.apiKey
-      }
-    })
-
-    return this.request.responseFull
-  }
 
   async fetchAll(congress, chamber) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/${congress}/${chamber}/members.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/${chamber}/members.json`)
     const response = this.request.response = responseFull.data.results[0].members
     return response.filter(member => {
       if (this.query.party) {
@@ -133,70 +118,70 @@ export default class Fetch {
   }
 
   async fetchOne() {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${this.id}.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${this.id}.json`)
     return this.request.response = responseFull.data.results
   }
 
 
   async fetchVoteComparison(firstMemberID, secondMemberID, congress, chamber) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${firstMemberID}/votes/${secondMemberID}/${congress}/${chamber}.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${firstMemberID}/votes/${secondMemberID}/${congress}/${chamber}.json`)
     return this.request.response = responseFull.data.results
   }
 
   async fetchExpenses(id, year, quarter) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${id}/office_expenses/${year}/${quarter}.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/office_expenses/${year}/${quarter}.json`)
     return this.request.response = responseFull.data.results
   }
 
   async fetchPrivatelyFundedTravel(congress) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/${congress}/private-trips.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/private-trips.json`)
     return this.request.response = responseFull.data.results
   }
 
   async fetchPrivatelyFundedTravelByMember(id) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${id}/private-trips.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/private-trips.json`)
     return this.request.response = responseFull.data.results
   }
 
   async fetchQuarterlyMemberExpenses(id, year, quarter) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${id}/office_expenses/${year}/${quarter}.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/office_expenses/${year}/${quarter}.json`)
     return this.request.response = responseFull.data.results
   }
 
   async fetchQuarterlyMemberExpensesByCategory(id, category) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${id}/office_expenses/category/${category}.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/office_expenses/category/${category}.json`)
     return this.request.response = responseFull.data.results
   }
 
   async fetchQuarterlyOfficeExpensesByCategory(category, year, quarter) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/office_expenses/category/${category}/${year}/${quarter}.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/office_expenses/category/${category}/${year}/${quarter}.json`)
     return this.request.response = responseFull.data.results
   }
 
   async fetchSponsorshipComparison(firstMemberID, secondMemberID, congress, chamber) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${firstMemberID}/bills/${secondMemberID}/${congress}/${chamber}.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${firstMemberID}/bills/${secondMemberID}/${congress}/${chamber}.json`)
     return this.request.response = responseFull.data.results
   }
 
 
   async fetchCosponsoredByMember(id, type) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${id}/bills/${type}.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/bills/${type}.json`)
     return this.request.response = responseFull.data.results
   }
 
 
   async fetchNew() {
-    const responseFull = await this._fetch("https://api.propublica.org/congress/v1/members/new.json")
+    const responseFull = await this.send("https://api.propublica.org/congress/v1/members/new.json")
     return this.request.response = responseFull.data.results
   }
 
   async fetchPosition() {
-    const responseFull = await this._fetch("https://api.propublica.org/congress/v1/members/new.json")
+    const responseFull = await this.send("https://api.propublica.org/congress/v1/members/new.json")
     return this.request.response = responseFull.data.results
   }
 
   async fetchVotes(id, query) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${id}/votes.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/votes.json`)
     const response = this.request.response = responseFull.data.results
     return response.filter( vote => {
 
@@ -213,12 +198,12 @@ export default class Fetch {
   }
 
   async fetchByStateAndDistrict(chamber, state, district) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/members/${chamber}/${state}/${district}/current.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${chamber}/${state}/${district}/current.json`)
     return this.request.response = responseFull.data.results
   }
 
   async fetchLeaving(congress, chamber) {
-    const responseFull = await this._fetch(`https://api.propublica.org/congress/v1/${congress}/${chamber}/members/leaving.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/${chamber}/members/leaving.json`)
     return this.request.response = responseFull.data.results
   }
 }

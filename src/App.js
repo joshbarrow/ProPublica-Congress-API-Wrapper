@@ -5,8 +5,8 @@ const propublicaAPI = new PropublicaAPI('8ZF7cG4fkrseYNv1rGE3H6V749DE2ttLcaS8Ryw
 
 function App() {
   propublicaAPI.Bills
-  .chamber("senate")
-  .upcomingBills()
+  .congress(114)
+  .cosponsors("hr4249")
   .fetch()
   return null
 }

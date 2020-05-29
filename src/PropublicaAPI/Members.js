@@ -1,4 +1,4 @@
-import Fetch from './Members/Fetch'
+import Request from './Members/Request'
 
 export default class Members {
   constructor(apiKey) {
@@ -8,8 +8,8 @@ export default class Members {
   }
 
   async fetch() {
-    this._fetch = new Fetch(this.apiKey)
-    const response = await this._fetch.fetch(this.query, this.mode)
+    this.request = new Request(this.apiKey)
+    const response = await this.request.fetch(this.query, this.mode)
     return response
   }
 

@@ -1,5 +1,4 @@
-import axios from 'axios'
-import Fetch from './Bills/Fetch'
+import Request from './Bills/Request'
 
 export default class Bills {
   constructor(apiKey) {
@@ -9,37 +8,60 @@ export default class Bills {
   }
 
   async fetch() {
-    this._fetch = new Fetch(this.apiKey)
-    const response = await this._fetch.fetch(this.query, this.mode)
+    this.request = new Request(this.apiKey)
+    const response = await this.request.fetch(this.query, this.mode)
     return response
   }
 
-  twentyMostRecentBills() {
-    this._mode = "twentyMostRecentBills"
+  search(query, sort, dir) {
+    this._mode = "search"
+    this.query.query = query
+    this.query.sort = sort
+    this.query.dir = dir
     return this
   }
 
-  twentyMostRecentBillsByType(type) {
-    this._mode = "twentyMostRecentBillsByType"
-    this.query.type = type
-    return this
-  }
-
-  twentyMostRecentBillsByMember(id, type) {
-    this._mode = "twentyMostRecentBillsByMember"
-    this.query.id = id
-    this.query.type = type
-    return this
-  }
-
-  twentyMostRecentBillsBySubject(subject) {
-    this._mode = "twentyMostRecentBillsBySubject"
+  recent({ type, member, subject }) {
+    this._mode = "recent"
+    this.query.type = type || "introduced"
+    this.query.memberID = member
     this.query.subject = subject
     return this
   }
 
-  upcomingBills(subject) {
-    this._mode = "upcomingBills"
+  upcoming() {
+    this._mode = "upcoming"
+    return this
+  }
+
+  show(billID) {
+    this._mode = "show"
+    this.query.billID = billID
+    return this
+  }
+
+  amendments(billID) {
+    this._mode = "amendments"
+    this.query.billID = billID
+    return this
+  }
+
+  cosponsors(billID) {
+    this._mode = "cosponsors"
+    this.query.billID = billID
+    return this
+  }
+
+  subjects({ bill, query }) {
+    this._mode = "subjects"
+    this.query.billID = bill
+    this.query.query = query || ""
+    return this
+  }
+
+  related(billID) {
+    this._mode = "related"
+    this.query.billID = billID
     return this
   }
 
@@ -65,11 +87,9 @@ export default class Bills {
 
   get mode() {
     if (this._mode) return this._mode
-    if (this.query.district) return "district"
     if (this.query.id) return "show"
-    if (this.query.position) return "position"
 
-    return "index"
+    return "search"
   }
 
 
