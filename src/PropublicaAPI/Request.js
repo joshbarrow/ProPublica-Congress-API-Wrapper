@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export default class PropublicaAPIRequest {
+export default class Request {
   constructor(apiKey) {
     this.apiKey = apiKey
     this.request = {

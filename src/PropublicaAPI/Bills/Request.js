@@ -1,7 +1,7 @@
 import moment from 'moment'
-import PropublicaAPIRequest from '../PropublicaAPIRequest'
+import PropublicaRequest from '../Request'
 
-export default class Request extends PropublicaAPIRequest {
+export default class Request extends PropublicaRequest {
   constructor(apiKey) {
     super(apiKey)
   }
