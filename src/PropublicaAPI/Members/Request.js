@@ -1,11 +1,7 @@
-import axios from 'axios'
 import moment from 'moment'
 import PropublicaRequest from '../Request'
 
 export default class Request extends PropublicaRequest {
-  constructor(apiKey) {
-    super(apiKey)
-  }
 
   async fetch(query, mode) {
     const {
@@ -45,35 +41,29 @@ export default class Request extends PropublicaRequest {
       break
 
     case "expenses":
-      response = await this.fetchExpenses(id, year, quarter)
+      if (year)
+        response = await this.fetchExpenses(id, year, quarter)
+      else if (category)
+        response = await this.fetchExpensesByCategory(id, category)
       break
 
-    case "quarterlyMemberExpensesByCategory":
-    response = await this.fetchQuarterlyMemberExpensesByCategory(id, category)
-    break
-
-    case "quarterlyMemberExpenses":
-    response = await this.fetchQuarterlyMemberExpenses(id, year, quarter)
-    break
-
-    case "quarterlyOfficeExpensesByCategory":
-    response = await this.fetchQuarterlyOfficeExpensesByCategory(category, year, quarter)
-    break
+    case "officeExpenses":
+      response = await this.fetchOfficeExpenses(category, year, quarter)
+      break
 
     case "compareVotes":
       response = await this.fetchVoteComparison(firstMemberID, secondMemberID, congress, chamber)
       break
 
-    case "privatelyFundedTravel":
-      response = await this.fetchPrivatelyFundedTravel(congress)
+    case "privateTravel":
+      if (id)
+        response = await this.privateTravel(id)
+      else if (congress)
+        response = await this.privateTravelByCongress(congress)
       break
 
-      case "privatelyFundedTravelByMember":
-        response = await this.fetchPrivatelyFundedTravelByMember(id)
-        break
-
     case "cosponsored":
-      response = await this.fetchCosponsoredByMember(id, type)
+      response = await this.fetchCosponsored(id, type)
       break
 
     case "compareSponsorships":
@@ -102,7 +92,7 @@ export default class Request extends PropublicaRequest {
 
 
   async fetchAll(congress, chamber) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/${chamber}/members.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress || this.congress}/${chamber || this.chamber}/members.json`)
     const response = this.request.response = responseFull.data.results[0].members
     return response.filter(member => {
       if (this.query.party) {
@@ -133,27 +123,22 @@ export default class Request extends PropublicaRequest {
     return this.request.response = responseFull.data.results
   }
 
-  async fetchPrivatelyFundedTravel(congress) {
+  async privateTravelByCongress(congress) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/private-trips.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchPrivatelyFundedTravelByMember(id) {
+  async privateTravel(id) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/private-trips.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchQuarterlyMemberExpenses(id, year, quarter) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/office_expenses/${year}/${quarter}.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchQuarterlyMemberExpensesByCategory(id, category) {
+  async fetchExpensesByCategory(id, category) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/office_expenses/category/${category}.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchQuarterlyOfficeExpensesByCategory(category, year, quarter) {
+  async fetchOfficeExpenses(category, year, quarter) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/office_expenses/category/${category}/${year}/${quarter}.json`)
     return this.request.response = responseFull.data.results
   }
@@ -164,7 +149,7 @@ export default class Request extends PropublicaRequest {
   }
 
 
-  async fetchCosponsoredByMember(id, type) {
+  async fetchCosponsored(id, type) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/bills/${type}.json`)
     return this.request.response = responseFull.data.results
   }

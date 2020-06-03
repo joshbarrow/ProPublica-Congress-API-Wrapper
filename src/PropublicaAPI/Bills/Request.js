@@ -2,14 +2,9 @@ import moment from 'moment'
 import PropublicaRequest from '../Request'
 
 export default class Request extends PropublicaRequest {
-  constructor(apiKey) {
-    super(apiKey)
-  }
 
   async fetch(params, mode) {
     const {
-      congress,
-      chamber,
       type,
       sort,
       dir,
@@ -18,6 +13,8 @@ export default class Request extends PropublicaRequest {
       billID,
       memberID,
     } = params
+    const congress = params.congress || this.defaultCongress
+    const chamber = params.chamber || this.defaultChamber
     let response
 
     switch(mode) {

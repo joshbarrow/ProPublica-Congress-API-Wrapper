@@ -1,68 +1,36 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Initialization
 
-## Available Scripts
+# Votes
 
-In the project directory, you can run:
+1. propublicaAPI.Votes.chamber().recent()
+2. propublicaAPI.Votes.congress().chamber().byRollCall(sessionNumber, rollCallNumber)
+3. propublicaAPI.Votes.congress().chamber().byType(type)
+4. propublicaAPI.Votes.chamber().before().after()
+5. propublicaAPI.Votes.chamber().year().month()
+6. propublicaAPI.Votes.congress().nominations()
 
-### `yarn start`
+```
+GET <https://api.propublica.org/congress/v1/{congress}/explanations.json>
+GET <https://api.propublica.org/congress/v1/{congress}/explanations/votes.json>
+GET <https://api.propublica.org/congress/v1/members/{member_id}/explanations/{congress}.json>
+GET <https://api.propublica.org/congress/v1/members/{member_id}/explanations/{congress}/votes.json> GET <https://api.propublica.org/congress/v1/{congress}/explanations/votes/{category}.json>
+GET <https://api.propublica.org/congress/v1/members/{member_id}/explanations/{congress}/votes/{category}.json>
+```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```javascript
+propublicaApi.Votes.congress(116).explanations({ offset: number, votes: boolean, member: string, category: string, })
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+# Statements
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+1. propublicaAPI.Statements.chamber().recent()
+2. propublicaAPI.Statements.on(date)
+3. propublicaAPI.Statements.search(term)
+4. propublicaAPI.Statements.subjects()
+5. propublicaAPI.Statements.bySubject(subject)
+6. propublicaAPI.Statements.congress().byMember(memberID)
+7. propublicaAPI.Statements.congress().byBill(billID)
+8. propublicaAPI.Statements.congress().committee().recent()
+9. propublicaAPI.Statements.congress().committee().byDate(date)
+10. propublicaAPI.Statements.congress().byCommittee(committeeID)
+11. propublicaAPI.Statements.congress().committee().search(term)

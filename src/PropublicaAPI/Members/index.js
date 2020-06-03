@@ -1,31 +1,18 @@
 import Request from './Request'
+import Resource from '../Resource'
 
-export default class Members {
-  constructor(apiKey) {
-    this.apiKey = apiKey
-    this.query = {}
-    this._mode = null
+export default class Members extends Resource {
+  constructor(apiKey, config){
+    super(apiKey, Request, config)
   }
 
-  async fetch() {
-    this.request = new Request(this.apiKey)
-    const response = await this.request.fetch(this.query, this.mode)
-    return response
-  }
+  get mode() {
+    if (this._mode) return this._mode
+    if (this.query.district) return "district"
+    if (this.query.id) return "show"
+    if (this.query.position) return "position"
 
-  before(before) {
-    this.query.before = before
-    return this
-  }
-
-  after(after) {
-    this.query.after = after
-    return this
-  }
-
-  congress(congress) {
-    this.query.congress = congress
-    return this
+    return "index"
   }
 
   position(position) {
@@ -57,15 +44,6 @@ export default class Members {
     return this
   }
 
-  get mode() {
-    if (this._mode) return this._mode
-    if (this.query.district) return "district"
-    if (this.query.id) return "show"
-    if (this.query.position) return "position"
-
-    return "index"
-  }
-
   republican() {
     this.query.party = "R"
     return this
@@ -86,12 +64,7 @@ export default class Members {
     return this
   }
 
-  chamber(chamber) {
-    this.query.chamber = chamber
-    return this
-  }
-
-  cosponsoredByMember(id, type) {
+  cosponsored(id, type) {
     this._mode = "cosponsored"
     this.query.id = id
     this.query.type = type
@@ -108,44 +81,27 @@ export default class Members {
     return this
   }
 
-  expenses(id, year, quarter) {
+  expenses({id, year, quarter, category}) {
     this._mode = "expenses"
     this.query.id = id
     this.query.year = year
     this.query.quarter = quarter
-    return this
-  }
-
-  quarterlyMemberExpensesByCategory(id, category) {
-    this._mode = "quarterlyMemberExpensesByCategory"
-    this.query.id = id
     this.query.category = category
     return this
   }
 
-  quarterlyMemberExpenses(id, year, quarter) {
-    this._mode = "quarterlyMemberExpenses"
-    this.query.id = id
-    this.query.year = year
-    this.query.quarter = quarter
-    return this
-  }
-
-  quarterlyOfficeExpensesByCategory(category, year, quarter) {
-    this._mode = "quarterlyOfficeExpensesByCategory"
+  officeExpenses(category, year, quarter) {
+    this._mode = "officeExpenses"
     this.query.category = category
     this.query.year = year
     this.query.quarter = quarter
     return this
   }
 
-  privatelyFundedTravel() {
-    this._mode = "privatelyFundedTravel"
-    return this
-  }
-
-  privatelyFundedTravelByMember() {
-    this._mode = "privatelyFundedTravelByMember"
+  privateTravel({ id, congress }) {
+    this._mode = "privateTravel"
+    this.query.id = id
+    this.query.congress = congress
     return this
   }
 

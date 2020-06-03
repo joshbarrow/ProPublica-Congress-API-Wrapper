@@ -1,16 +1,16 @@
 import Request from './Request'
+import Resource from '../Resource'
 
-export default class Bills {
-  constructor(apiKey) {
-    this.apiKey = apiKey
-    this.query = {}
-    this._mode = null
+export default class Bills extends Resource {
+  constructor(apiKey, config){
+    super(apiKey, Request, config)
   }
 
-  async fetch() {
-    this.request = new Request(this.apiKey)
-    const response = await this.request.fetch(this.query, this.mode)
-    return response
+  get mode() {
+    if (this._mode) return this._mode
+    if (this.query.id) return "show"
+
+    return "search"
   }
 
   search(query, sort, dir) {
@@ -64,33 +64,4 @@ export default class Bills {
     this.query.billID = billID
     return this
   }
-
-  before(before) {
-    this.query.before = before
-    return this
-  }
-
-  after(after) {
-    this.query.after = after
-    return this
-  }
-
-  congress(congress) {
-    this.query.congress = congress
-    return this
-  }
-
-  chamber(chamber) {
-    this.query.chamber = chamber
-    return this
-  }
-
-  get mode() {
-    if (this._mode) return this._mode
-    if (this.query.id) return "show"
-
-    return "search"
-  }
-
-
 }

@@ -1,7 +1,12 @@
 import axios from 'axios'
 
 export default class Request {
-  constructor(apiKey) {
+  constructor(apiKey, {
+    congress,
+    chamber,
+  }) {
+    this.defaultCongress = congress
+    this.defaultChamber = chamber
     this.apiKey = apiKey
     this.request = {
       url: null,
