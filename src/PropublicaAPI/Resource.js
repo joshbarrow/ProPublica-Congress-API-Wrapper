@@ -9,6 +9,10 @@ export default class Resource {
     this.defaultChamber = chamber
   }
 
+  get mode() {
+    return this._mode
+  }
+
   get queryWithDefaults() {
     return {
       ...this.query,
@@ -26,6 +30,11 @@ export default class Resource {
     return response
   }
 
+  on(date) {
+    this.query.date = date
+    return this
+  }
+
   before(before) {
     this.query.before = before
     return this
@@ -33,6 +42,11 @@ export default class Resource {
 
   offset(offset) {
     this.query.offset = offset
+    return this
+  }
+
+  category(category) {
+    this.query.category = category
     return this
   }
 

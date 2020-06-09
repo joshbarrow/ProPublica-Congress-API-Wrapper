@@ -77,7 +77,7 @@ export default class Request extends PropublicaRequest {
       break
 
     case "index":
-      response = await this.fetchAll(congress, chamber, party, state)
+      response = await this.fetchAll(congress, chamber, { party, state })
       break
 
     default:
@@ -88,7 +88,7 @@ export default class Request extends PropublicaRequest {
   }
 
 
-  async fetchAll(congress, chamber, party, state) {
+  async fetchAll(congress, chamber, { party, state }) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress || this.congress}/${chamber || this.chamber}/members.json`)
     const response = this.request.response = responseFull.data.results[0].members
     return response.filter(member => {

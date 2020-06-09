@@ -7,17 +7,12 @@ export default class Statements extends Resource {
   }
 
   get mode() {
+    if (this.query.on) return "on"
     return this._mode
   }
 
   recent() {
     this._mode = "recent"
-    return this
-  }
-
-  on(date) {
-    this._mode = "on"
-    this.query.date = date
     return this
   }
 

@@ -10,91 +10,58 @@ export default class extends PropublicaRequest {
       chamber,
       committeeID,
       subcommitteeID,
-      category,
-      date,
     } = query
     let response
 
     switch(mode) {
-    case "list":
-      response = await this.fetchList(congress, chamber)
+    case "index":
+      response = await this.fetchIndex(congress, chamber)
       break
 
     case "show":
-      response = await this.fetchShow(congress, chamber, committeeID)
+      response = await this.fetchShow(committeeID, congress, chamber)
       break
 
-    case "recentHearings":
-      response = await this.fetchRecentHearings(congress)
+    case "hearings":
+      response = await this.fetchHearings(congress)
       break
 
     case "hearingsByCommittee":
-      response = await this.fetchHearingsByCommittee(congress, chamber, committeeID)
+      response = await this.fetchHearingsByCommittee(committeeID, congress, chamber)
       break
 
     case "subcommittee":
-      response = await this.fetchSubcommittee(congress, chamber, committeeID, subcommitteeID)
+      response = await this.fetchSubcommittee(committeeID, subcommitteeID, congress, chamber)
       break
 
-    case "communications":
-      if (congress && category)
-        response = await this.fetchCommunicationsByCategory(congress, category)
-      else if (congress && chamber)
-        response = await this.fetchCommunicationsByChamber(congress, chamber)
-      else if (date)
-        response = await this.fetchCommunicationsByDate(date)
-      else if (congress)
-        response = await this.fetchRecentCommunications(congress)
-      break
-
-      default: throw new ModeNotSet()
+    default: throw new ModeNotSet()
 
     }
     return response
   }
 
-  async fetchList(congress, chamber) {
+  async fetchIndex(congress, chamber) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/${chamber}/committees.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchShow(congress, chamber, committeeID) {
+  async fetchShow(committeeID, congress, chamber) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/${chamber}/committees/${committeeID}.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchRecentHearings(congress) {
+  async fetchHearings(congress) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/committees/hearings.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchHearingsByCommittee(congress, chamber, committeeID) {
+  async fetchHearingsByCommittee(committeeID, congress, chamber) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/${chamber}/committees/${committeeID}/hearings.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchSubcommittee(congress, chamber, committeeID, subcommitteeID) {
+  async fetchSubcommittee(committeeID, subcommitteeID, congress, chamber) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/${chamber}/committees/${committeeID}/subcommittees/${subcommitteeID}.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchRecentCommunications(congress) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/communications.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchCommunicationsByCategory(congress, category) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/communications/category/${category}.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchCommunicationsByDate(date) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/communications/date/${date}.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchCommunicationsByChamber(congress, chamber) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/communications/${chamber}.json`)
     return this.request.response = responseFull.data.results
   }
 }

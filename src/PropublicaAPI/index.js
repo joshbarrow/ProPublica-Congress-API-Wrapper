@@ -3,6 +3,7 @@ import Bills from './Bills'
 import Votes from './Votes'
 import Statements from './Statements'
 import Committees from './Committees'
+import Communications from './Communications'
 
 export default class PropublicaAPI {
   constructor(apiKey, config) {
@@ -11,5 +12,6 @@ export default class PropublicaAPI {
     this.Votes = new Votes(apiKey, config)
     this.Statements = new Statements(apiKey, config)
     this.Committees = new Committees(apiKey, config)
+    this.Communications = new Communications(apiKey, config)
   }
 }

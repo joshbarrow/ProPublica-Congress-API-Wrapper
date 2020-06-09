@@ -43,7 +43,7 @@ export default class Votes extends Resource {
       this.query.offset = offset
     this.query.memberID = memberID
     this.query.votes = votes
-    this.query.category = category
+    this.query.category = category || this.query.category
     return this
   }
 

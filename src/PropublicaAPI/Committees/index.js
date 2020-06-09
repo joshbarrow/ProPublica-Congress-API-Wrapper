@@ -5,13 +5,9 @@ export default class Committees extends Resource {
   constructor(apiKey, config){
     super(apiKey, Request, config)
   }
-
-  get mode() {
-    return this._mode
-  }
-
-  list() {
-    this._mode = "list"
+  
+  index() {
+    this._mode = "index"
     return this
   }
 
@@ -21,8 +17,8 @@ export default class Committees extends Resource {
     return this
   }
 
-  recentHearings() {
-    this._mode = "recentHearings"
+  hearings() {
+    this._mode = "hearings"
     return this
   }
 
@@ -42,7 +38,7 @@ export default class Committees extends Resource {
   communications(date, category) {
     this._mode = "communications"
     this.query.date = date
-    this.query.category = category
+    this.query.category = category || this.query.category
     return this
   }
 }
