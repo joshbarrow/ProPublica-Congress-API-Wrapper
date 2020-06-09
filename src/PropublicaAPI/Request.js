@@ -16,6 +16,16 @@ export default class Request {
     }
   }
 
+  async fetch(query, mode, modifiers) {
+    const response = await this.performFetch(query, mode, modifiers)
+    this.query = {}
+    this.request.responseFiltered = response
+    return {
+      data: response,
+      request: this.request,
+    }
+  }
+
   async send(url, params) {
     this.request.url = url
     this.request.responseFull = await axios.get(url, {

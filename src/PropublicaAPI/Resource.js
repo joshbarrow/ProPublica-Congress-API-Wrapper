@@ -2,10 +2,19 @@ export default class Resource {
   constructor(apiKey, Request, { congress, chamber }) {
     this.apiKey = apiKey
     this.query = {}
+    this.modifiers = {}
     this._mode = null
     this.Request = Request
     this.defaultCongress = congress || 116
     this.defaultChamber = chamber
+  }
+
+  get queryWithDefaults() {
+    return {
+      ...this.query,
+      congress: this.query.congress || this.defaultCongress,
+      chamber: this.query.chamber || this.defaultChamber,
+    }
   }
 
   async fetch() {
@@ -13,7 +22,7 @@ export default class Resource {
       congress: this.defaultCongress,
       chamber: this.defaultChamber,
     })
-    const response = await this.request.fetch(this.query, this.mode)
+    const response = await this.request.fetch(this.queryWithDefaults, this.mode, this.modifiers)
     return response
   }
 

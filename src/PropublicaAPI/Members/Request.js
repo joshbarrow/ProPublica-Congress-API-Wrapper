@@ -1,13 +1,15 @@
 import moment from 'moment'
 import PropublicaRequest from '../Request'
+import ModeNotSet from '../Exceptions/ModeNotSet'
 
 export default class Request extends PropublicaRequest {
 
-  async fetch(query, mode) {
+  async performFetch(query, mode) {
     const {
       congress,
       chamber,
       state,
+      party,
       district,
       id,
       type,
@@ -75,32 +77,27 @@ export default class Request extends PropublicaRequest {
       break
 
     case "index":
-      response = await this.fetchAll(congress, chamber)
+      response = await this.fetchAll(congress, chamber, party, state)
       break
 
     default:
-      throw `Unknown mode ${mode}`
+      throw new ModeNotSet()
     }
 
-    this.query = {}
-    this.request.responseFiltered = response
-    return {
-      data: response,
-      request: this.request,
-    }
+    return response
   }
 
 
-  async fetchAll(congress, chamber) {
+  async fetchAll(congress, chamber, party, state) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress || this.congress}/${chamber || this.chamber}/members.json`)
     const response = this.request.response = responseFull.data.results[0].members
     return response.filter(member => {
-      if (this.query.party) {
-        if (member.party !== this.query.party) return false
+      if (party) {
+        if (member.party !== party) return false
       }
 
-      if (this.query.state) {
-        if (member.state !== this.query.state) return false
+      if (state) {
+        if (member.state !== state) return false
       }
 
       return true

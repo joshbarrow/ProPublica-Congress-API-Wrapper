@@ -49,7 +49,7 @@ export default class Members extends Resource {
     return this
   }
 
-  democratic() {
+  democrat() {
     this.query.party = "D"
     return this
   }

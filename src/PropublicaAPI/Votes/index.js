@@ -16,7 +16,6 @@ export default class Votes extends Resource {
     this._mode = "recent"
     if (offset)
       this.query.offset = offset
-      console.log("this one", this.query.offset, offset);
     return this
   }
 
@@ -38,12 +37,14 @@ export default class Votes extends Resource {
     return this
   }
 
-  explanations({ offset, votes, memberID, category }) {
+  explanations({votes, memberID, category, offset}) {
     this._mode = "explanations"
-    this.query.offset = offset
-    this.query.votes = "votes"
+    if (offset)
+      this.query.offset = offset
     this.query.memberID = memberID
+    this.query.votes = votes
     this.query.category = category
     return this
   }
+
 }

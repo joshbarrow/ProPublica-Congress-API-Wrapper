@@ -1,20 +1,21 @@
 import moment from 'moment'
 import PropublicaRequest from '../Request'
+import ModeNotSet from '../Exceptions/ModeNotSet'
 
 export default class Request extends PropublicaRequest {
 
-  async fetch(params, mode) {
+  async performFetch(params, mode) {
     const {
       type,
       sort,
       dir,
       query,
       subject,
+      congress,
+      chamber,
       billID,
       memberID,
     } = params
-    const congress = params.congress || this.defaultCongress
-    const chamber = params.chamber || this.defaultChamber
     let response
 
     switch(mode) {
@@ -66,15 +67,10 @@ export default class Request extends PropublicaRequest {
 
 
     default:
-      throw `Unknown mode ${mode}`
+      throw new ModeNotSet()
     }
 
-    this.query = {}
-    this.request.responseFiltered = response
-    return {
-      data: response,
-      request: this.request,
-    }
+    return response
   }
 
   async fetchSearch(query, sort, dir) {

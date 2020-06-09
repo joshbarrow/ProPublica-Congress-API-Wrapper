@@ -1,12 +1,15 @@
 import PropublicaRequest from '../Request'
 import ChamberNotSet from '../Exceptions/ChamberNotSet'
+import ModeNotSet from '../Exceptions/ModeNotSet'
 
 export default class Request extends PropublicaRequest {
 
-  async fetch(query, mode) {
+  async performFetch(query, mode) {
     const {
       after,
       before,
+      chamber,
+      congress,
       category,
       memberID,
       month,
@@ -14,12 +17,10 @@ export default class Request extends PropublicaRequest {
       rollCallNumber,
       sessionNumber,
       type,
-      votes,
       year,
+      votes
     } = query
     let response
-    const congress = query.congress || this.defaultCongress
-    const chamber = query.chamber || this.defaultChamber
     switch(mode) {
 
     case "recent":
@@ -44,30 +45,25 @@ export default class Request extends PropublicaRequest {
       break
 
     case "explanations":
-      if (congress)
-        response = await this.fetchPersonalExplanations(congress, offset)
-      else if (congress && votes)
+      if (congress && votes && !memberID && !category)
         response = await this.fetchPersonalExplanationVotes(congress, votes, offset)
-      else if (memberID && category)
+      else if (memberID && congress && votes)
+        response = await this.fetchMemberExplanationVotes(memberID, congress)
+      else if (memberID && congress && category)
+        response = await this.fetchMemberExplanationVotesByCategory(memberID, congress, category)
+      else if (memberID && congress && category)
         response = await this.fetchPersonalExplanationVotesByCategory(congress, category, offset)
       else if (memberID && congress)
         response = await this.fetchMemberExplanation(memberID, congress)
-      else if (memberID && congress && votes)
-        response = await this.fetchMemberExplanationVotes(memberID, congress, votes)
-      else if (memberID && congress && category)
-        response = await this.fetchMemberExplanationVotesByCategory(memberID, congress, category)
-        break
+      else if (congress)
+        response = await this.fetchPersonalExplanations(congress, offset)
+      break
 
       default:
-        throw `Unknown mode ${mode}`
+        throw new ModeNotSet()
     }
 
-    this.query = {}
-    this.request.responseFiltered = response
-    return {
-      data: response,
-      request: this.request,
-    }
+    return response
   }
 
   async fetchRecent(chamber, offset) {
@@ -94,12 +90,12 @@ export default class Request extends PropublicaRequest {
   }
 
   async fetchPersonalExplanations(congress, offset) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/explanations.json`)
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/explanations.json`, { offset })
     return this.request.response = responseFull.data.results
   }
 
-  async fetchPersonalExplanationVotes(congress, votes, offset) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/explanations/votes.json`)
+  async fetchPersonalExplanationVotes(congress, offset) {
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/explanations/votes.json`, { offset })
     return this.request.response = responseFull.data.results
   }
 
