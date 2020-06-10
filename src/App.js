@@ -7,9 +7,9 @@ const propublicaAPI = new PropublicaAPI('8ZF7cG4fkrseYNv1rGE3H6V749DE2ttLcaS8Ryw
 })
 
 function App() {
-  propublicaAPI.Communications
-    .chamber("house")
-    .fetch().then((response) => console.log(response))
+  propublicaAPI.Members
+    .cosponsored("B001260", "cosponsored")
+    .fetch()
   return null
 }
 

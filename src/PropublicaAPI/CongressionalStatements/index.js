@@ -1,13 +1,13 @@
 import Request from './Request'
 import Resource from '../Resource'
 
-export default class Statements extends Resource {
+export default class CongressionalStatements extends Resource {
   constructor(apiKey, config){
     super(apiKey, Request, config)
   }
 
   get mode() {
-    if (this.query.on) return "on"
+    if (this.query.date) return "on"
     return this._mode
   }
 
@@ -44,15 +44,6 @@ export default class Statements extends Resource {
     this._mode = "byBill"
     this.query.billID = billID
     this.query.congress = congress
-    return this
-  }
-
-  committee(committeeID) {
-    this.modifiers.committeeMode = true
-
-    if (committeeID)
-      this.query.committeeID = committeeID
-
     return this
   }
 }

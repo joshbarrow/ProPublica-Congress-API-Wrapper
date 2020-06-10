@@ -16,7 +16,14 @@ export default class Request {
     }
   }
 
+  get defaultParams() {
+    return {
+      offset: this.query.offset
+    }
+  }
+
   async fetch(query, mode, modifiers) {
+    this.query = query
     const response = await this.performFetch(query, mode, modifiers)
     this.query = {}
     this.request.responseFiltered = response
@@ -29,7 +36,10 @@ export default class Request {
   async send(url, params) {
     this.request.url = url
     this.request.responseFull = await axios.get(url, {
-      params,
+      params: {
+        ...params,
+        ...this.defaultParams
+      },
       headers: {
         'X-API-Key': this.apiKey
       }

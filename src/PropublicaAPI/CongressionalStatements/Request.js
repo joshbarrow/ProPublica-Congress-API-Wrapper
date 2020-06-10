@@ -3,7 +3,7 @@ import ModeNotSet from '../Exceptions/ModeNotSet'
 
 export default class Request extends PropublicaRequest {
 
-  async performFetch(query, mode, modifiers) {
+  async performFetch(query, mode) {
 
     const {
       congress,
@@ -12,30 +12,21 @@ export default class Request extends PropublicaRequest {
       subject,
       memberID,
       billID,
-      committeeID,
     } = query
     let response
 
     switch(mode) {
 
     case "recent":
-      if (modifiers.committeeMode)
-        response = await this.fetchWithinCommittee()
-      else
-        response = await this.fetchRecent()
+      response = await this.fetchRecent()
       break
 
     case "on":
-      if (modifiers.committeeMode)
-        response = await this.fetchWithinCommitteeByDate(date)
       response = await this.fetchOn(date)
       break
 
     case "search":
-      if (modifiers.committeeMode)
-        response = await this.fetchWithinCommitteeByTerm(term)
-      else
-        response = await this.fetchSearch(term)
+      response = await this.fetchSearch(term)
       break
 
     case "subjects":
@@ -55,13 +46,6 @@ export default class Request extends PropublicaRequest {
       break
 
     default:
-      if (modifiers.committeeMode) {
-        if (committeeID) {
-          response = await this.fetchByCommittee(committeeID)
-          break
-        } else
-          throw new ModeNotSet()
-      }
       throw new ModeNotSet()
     }
 
@@ -100,26 +84,6 @@ export default class Request extends PropublicaRequest {
 
   async fetchByBill(congress, billID) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/bills/${billID}/statements.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchWithinCommittee() {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/statements/committees/latest.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchWithinCommitteeByDate(date) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/statements/committees/date/${date}.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchWithinCommitteeByTerm(term) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/statements/committees/search.json?query=${term}`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchByCommittee(committeeID) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/statements/committees/${committeeID}.json`)
     return this.request.response = responseFull.data.results
   }
 }
