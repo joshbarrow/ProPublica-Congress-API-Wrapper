@@ -1,17 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import Members from './Members'
+import Bills from './Bills'
+import Votes from './Votes'
+import CongressionalStatements from './CongressionalStatements'
+import CommitteeStatements from './CommitteeStatements'
+import Committees from './Committees'
+import Communications from './Communications'
+import OfficeExpenses from './OfficeExpenses'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+export default class PropublicaAPI {
+  constructor(apiKey, config) {
+    this.Members = new Members(apiKey, config)
+    this.Bills = new Bills(apiKey, config)
+    this.Votes = new Votes(apiKey, config)
+    this.CongressionalStatements = new CongressionalStatements(apiKey, config)
+    this.CommitteeStatements = new CommitteeStatements(apiKey, config)
+    this.Committees = new Committees(apiKey, config)
+    this.Communications = new Communications(apiKey, config)
+    this.OfficeExpenses = new OfficeExpenses(apiKey, config)
+  }
+}
