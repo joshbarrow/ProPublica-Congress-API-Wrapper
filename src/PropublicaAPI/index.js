@@ -5,6 +5,7 @@ import CongressionalStatements from './CongressionalStatements'
 import CommitteeStatements from './CommitteeStatements'
 import Committees from './Committees'
 import Communications from './Communications'
+import OfficeExpenses from './OfficeExpenses'
 
 export default class PropublicaAPI {
   constructor(apiKey, config) {
@@ -15,5 +16,6 @@ export default class PropublicaAPI {
     this.CommitteeStatements = new CommitteeStatements(apiKey, config)
     this.Committees = new Committees(apiKey, config)
     this.Communications = new Communications(apiKey, config)
+    this.OfficeExpenses = new OfficeExpenses(apiKey, config)
   }
 }

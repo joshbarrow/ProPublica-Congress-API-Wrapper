@@ -26,15 +26,17 @@ export default class Request extends PropublicaRequest {
       response = await this.fetchNew()
       break
 
+    case "byState":
+      response = await this.fetchByState(chamber, state)
+      break
+
+    case "byStateAndDistrict":
+      response = await this.fetchByStateAndDistrict(chamber, state, district)
+      break
 
     case "show":
-    if (chamber && state && district)
-      response = await this.fetchHouseByStateAndDistrict(chamber, state, district)
-    else if (chamber && state)
-      response = await this.fetchSenateByState(chamber, state)
-    else if (id)
       response = await this.fetchOne(id)
-    break
+      break
 
     case "votes":
       response = await this.fetchVotes(id)
@@ -90,16 +92,12 @@ export default class Request extends PropublicaRequest {
   }
 
 
-  async fetchAll(congress, chamber, { party, state }) {
+  async fetchAll(congress, chamber, { party }) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress || this.congress}/${chamber || this.chamber}/members.json`)
     const response = this.request.response = responseFull.data.results[0].members
     return response.filter(member => {
       if (party) {
         if (member.party !== party) return false
-      }
-
-      if (state) {
-        if (member.state !== state) return false
       }
 
       return true
@@ -169,12 +167,12 @@ export default class Request extends PropublicaRequest {
     return this.request.response = responseFull.data.results
   }
 
-  async fetchHouseByStateAndDistrict(chamber, state, district) {
+  async fetchByStateAndDistrict(chamber, state, district) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${chamber}/${state}/${district}/current.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchSenateByState(chamber, state) {
+  async fetchByState(chamber, state) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${chamber}/${state}/current.json`)
     return this.request.response = responseFull.data.results
   }

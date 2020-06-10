@@ -8,6 +8,8 @@ export default class Members extends Resource {
 
   get mode() {
     if (this._mode) return this._mode
+    if (this.query.state && this.query.district) return "byStateAndDistrict"
+    if (this.query.state) return "byState"
 
     return "index"
   }

@@ -186,7 +186,6 @@ const chamber = "senate"
 const response =  await propublicaAPI.Members
   .chamber(chamber)   
   .state(state)  
-  .show()
   .fetch()
 ```
 
@@ -200,7 +199,6 @@ const response =  await propublicaAPI.Members
   .chamber("house")   
   .state("CA")
   .district(district)  
-  .show()
   .fetch()
 ```
 
@@ -238,10 +236,66 @@ const response =  await propublicaAPI.Members
 ### Example:
 
 ```javascript
-const chamber =  "house"
+const id = "K000388"
 const response =  await propublicaAPI.Members
-  .congress(115)
-  .chamber(chamber)  
-  .leaving()  
+  .votes(id)
   .fetch()
 ```
+
+## Compare Two Members Vote Positions
+
+### Params:
+
+**firstMemberID**: The ID of the member to retrieve; it is assigned by the [Biographical Directory of the United States Congress](http://bioguide.congress.gov/biosearch/biosearch.asp) or can be retrieved from a member list request. **secondMemberID**: The ID of the member to retrieve; it is assigned by the [Biographical Directory of the United States Congress](http://bioguide.congress.gov/biosearch/biosearch.asp) or can be retrieved from a member list request. **congress**: 102-116 for House, 101-116 for Senate **chamber**: `house` or `senate`
+
+### URL:
+
+`https://api.propublica.org/congress/v1/members/{firstMemberID}/votes/{secondMemberID}/{congress}/{chamber}.json`
+
+### Example:
+
+```javascript
+const firstMemberID = "G000575"
+const secondMemberID = "D000624"
+const response =  await propublicaAPI.Members
+  .congress(114)
+  .chamber("house")
+  .compareVotes(firstMemberID, secondMemberID)
+  .fetch()
+```
+
+## Compare Two Members' Bill Sponsorships
+
+### Params:
+
+**firstMemberID**: The ID of the member to retrieve; it is assigned by the [Biographical Directory of the United States Congress](http://bioguide.congress.gov/biosearch/biosearch.asp) or can be retrieved from a member list request. **secondMemberID**: The ID of the member to retrieve; it is assigned by the [Biographical Directory of the United States Congress](http://bioguide.congress.gov/biosearch/biosearch.asp) or can be retrieved from a member list request. **congress**: 102-116 for House, 101-116 for Senate **chamber**: `house` or `senate`
+
+### URL:
+
+`https://api.propublica.org/congress/v1/members/{firstMemberID}/bills/{secondMemberID}/{congress}/{chamber}.json`
+
+### Example:
+
+```javascript
+const firstMemberID = "B001283"
+const secondMemberID = "C001101"
+const response = await propublicaAPI.Members
+  .congress(114)
+  .chamber("house")
+  .compareSponsorships(firstMemberID, secondMemberID)
+  .fetch()
+```
+
+## Get Bills Cosponsored by a Specific Member
+
+### Params:
+
+**id**: The ID of the member to retrieve; it is assigned by the [Biographical Directory of the United States Congress](http://bioguide.congress.gov/biosearch/biosearch.asp) or can be retrieved from a member list request. **type:** `cosponsored` or `withdrawn`
+
+### URL:
+
+`https://api.propublica.org/congress/v1/members/{id}/bills/{type}.json`
+
+### Example:
+
+```js const id = "K000388" const type = "cosponsored" const response = await propublicaAPI.Members .cosponsored(id, type) .fetch()

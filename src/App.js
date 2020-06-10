@@ -8,7 +8,9 @@ const propublicaAPI = new PropublicaAPI('8ZF7cG4fkrseYNv1rGE3H6V749DE2ttLcaS8Ryw
 
 function App() {
   propublicaAPI.Members
-    .cosponsored("B001260", "cosponsored")
+    .state("CA")
+    .chamber("house")
+    .district(48)
     .fetch()
   return null
 }
