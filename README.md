@@ -1,23 +1,32 @@
 # Table of Contents
 
-- [Members](#Members)
+- [Introduction](#introduction)
+- [Initialization](#initialization)
+- [Members](#members)
 
-  - [Index (List of Members)](#Index)
-  - [Get a Specific Member](#GetASpecificMember)
-  - [Get New Members](#GetNewMembers)
-  - [Get Current Members by State/District](#GetCurrentMembersbyStateAndDistrict)
-  - [Get Members Leaving Office](#GetMembersLeavingOffice)
-  - [Get a Specific Member's Vote Positions](#GetaSpecificMember’sVotePositions)
-  - [Compare Two Members' Vote Positions](#CompareTwoMembersVotePositions)
-  - [Compare Two Members' Bill Sponsorships](#CompareTwoMembersVotePositions)
-  - [Get Bills Cosponsored by a Specific Member](#GetBillCosponsoredbyaSpecificMember)
+  - [Index](#index)
 
-- [Office Expenses](#OfficeExpenses)
+    - [Get a Specific Member](#get-a-specific-member)
+    - [Get New Members](#get-new-members)
+    - [Get Current Members by State/District](#get-current-members-by-state-district)
+    - [Get Members Leaving Office](#get-members-leaving-office)
+    - [Get a Specific Member's Vote Positions](#get-a-specific-member-s-vote-positions)
+    - [Compare Two Members Vote Positions](#compare-two-members-vote-positions)
+    - [Compare Two Members' Bill Sponsorships](#compare-two-members--bill-sponsorships)
+    - [Get Bills Cosponsored by a Specific Member](#get-bills-cosponsored-by-a-specific-member)
 
-  - [Get Quarterly Office Expenses by a Specific House Member](#GetQuarterlyOfficeExpensesbyaSpecificHouseMember)
-  - [Get Quarterly Office Expenses for a Specified Category](#GetQuarterlyOfficeExpensesForaSpecifiedCategory)
+- [Office Expenses](#office-expenses)
 
-- [Office Expenses](#OfficeExpenses)
+  - [Get Quarterly Office Expenses by a Specific House Member](#get-quarterly-office-expenses-by-a-specific-house-member)
+  - [Get Quarterly Office Expenses by Category for a Specific House Member](#get-quarterly-office-expenses-by-category-for-a-specific-house-member)
+
+    - [Get Quarterly Office Expenses for a Specified Category](#get-quarterly-office-expenses-for-a-specified-category)
+
+- [Privately Funded Travel](#privately-funded-travel)
+
+  - [Get Recent Privately Funded Trips](#get-recent-privately-funded-trips)
+
+    - [Get Recent Privately Funded Trips by a Specific House Member](#get-recent-privately-funded-trips-by-a-specific-house-member)
 
 # Introduction
 
@@ -144,6 +153,8 @@ const response =  await propublicaAPI.Members
 
 `https://api.propublica.org/congress/v1/members/{chamber}/{state}/{district}/current.json`
 
+### Example:
+
 ```javascript
 const district = 48
 const response =  await propublicaAPI.Members
@@ -259,7 +270,7 @@ const response =  await propublicaAPI.Members
 
 # Office Expenses
 
-Wrapper around the Members ProPublica API. More details can be found [here](https://projects.propublica.org/api-docs/congress-api/members/#office-expenses).
+Wrapper around the Office Expenses ProPublica API. More details can be found [here](https://projects.propublica.org/api-docs/congress-api/members/#office-expenses).
 
 ## Get Quarterly Office Expenses by a Specific House Member
 
@@ -309,7 +320,7 @@ const response =  await propublicaAPI.OfficeExpenses
 
 ### Params:
 
-**category**: `travel` or `personnel` or `rent-utilities` or `other-services` or `supplies` or `franked-mail` or `printing` or `equipment` or `total` **year:** 2009-2019 **quarter:** 1, 2, 3, 4
+**category**: `travel` or `personnel` or `rent-utilities` or `other-services` or `supplies` or `franked-mail` or `printing` or `equipment` or `total` **year:** 2009-2019 **quarter:** 1, 2, 3, 4 **offset:** The API returns the first 20 results ordered by amount descending and supports pagination using an `offset` URI parameter set to multiples of 20.
 
 ### URL:
 
@@ -321,16 +332,18 @@ const response =  await propublicaAPI.OfficeExpenses
 const category = "travel"
 const year = 2017
 const quarter = 4
+const offset = 40
 const response =  await propublicaAPI.OfficeExpenses
   .category(category)
   .year(2017)
   .quarter(4)  
+  .offset(offset)
   .fetch()
 ```
 
 # Privately Funded Travel
 
-Wrapper around the Members ProPublica API. More details can be found [here](https://projects.propublica.org/api-docs/congress-api/members/#privately-funded-travel)
+Wrapper around the Privately Funded Travel ProPublica API. More details can be found [here](https://projects.propublica.org/api-docs/congress-api/members/#privately-funded-travel)
 
 ## Get Recent Privately Funded Trips
 
@@ -369,5 +382,133 @@ const response =  await propublicaAPI.Travel
 const memberID = "W000797"
 const response =  await propublicaAPI.Travel
   .member(memberID)
+  .fetch()
+```
+
+# Bills
+
+Wrapper around the Bills ProPublica API. More details can be found [here](https://projects.propublica.org/api-docs/congress-api/bills/#bills)
+
+## Search Bills
+
+## Params:
+
+**query:** keyword or phrase **sort:** `_score` or `date` (default is `date`) **dir:** `asc` or `desc` (default) is `desc` **offset:** You can paginate through bills using the `offset` querystring parameter that accepts multiples of 20.
+
+## URL:
+
+`https://api.propublica.org/congress/v1/bills/search.json?query={query}`
+
+## Example:
+
+```javascript
+const query = "megahertz"
+const response =  await propublicaAPI.Bills
+  .search(query)
+  .fetch()
+```
+
+## Get Recent Bills
+
+## Params:
+
+**type:** The order of the results depends on the value of `type` and all results are sorted in descending order: `introduced`, `updated`, `active`, `passed`, `enacted` or `vetoed` **congress:** 105-116 **chamber:** `house`, `senate` or `both` **offset:** You can paginate through bills using the `offset` querystring parameter that accepts multiples of 20.
+
+## URL:
+
+`https://api.propublica.org/congress/v1/{congress}/{chamber}/bills/{type}.json`
+
+## Example:
+
+```javascript
+const congress = 115
+const chamber = "house"
+const type = "introduced"
+const offset = 40
+const response =  await propublicaAPI.Bills
+  .congress(congress)
+  .chamber(chamber)
+  .type(type)
+  .offset(offset)
+  .fetch()
+```
+
+## Get Recent Bills by a Specific Member
+
+## Params:
+
+**memberID:** The ID of the member to retrieve; it is assigned by the [Biographical Directory of the United States Congress](http://bioguide.congress.gov/biosearch/biosearch.asp) or can be retrieved from a member list request. **type:** The order of the results depends on the value of `type` and all results are sorted in descending order: `introduced`, `updated`, `active`, `passed`, `enacted` or `vetoed`
+
+## URL:
+
+`https://api.propublica.org/congress/v1/members/{memberID}/bills/{type}.json`
+
+## Example:
+
+```javascript
+const memberID = "L000287"
+const type = "introduced"
+const response =  await propublicaAPI.Bills
+  .member(memberID)
+  .type(type)
+  .fetch()
+```
+
+## Get Recent Bills by a Specific Subject
+
+## Params:
+
+**subject:** A slug version of a legislative subject, displayed as `url_name` in subject responses.
+
+## URL:
+
+`https://api.propublica.org/congress/v1/bills/subjects/{subject}.json`
+
+## Example:
+
+```javascript
+const subject = "meat"
+const response =  await propublicaAPI.Bills
+  .subject(subject)
+  .fetch()
+```
+
+## Get Upcoming Bills
+
+## Params:
+
+**chamber:** `house` or `senate`
+
+## URL:
+
+`https://api.propublica.org/congress/v1/bills/upcoming/{chamber}.json`
+
+## Example:
+
+```javascript
+const chamber = "senate"
+const response =  await propublicaAPI.Bills
+  .chamber(chamber)
+  .fetch()
+```
+
+## Get Specific Bill
+
+## Params:
+
+**congress:** 105-116 **billID:** a bill slug, for example `hr4881` - these can be found in the recent bill response.
+
+## URL:
+
+`https://api.propublica.org/congress/v1/{congress}/bills/{billID}.json`
+
+## Example:
+
+```javascript
+const congress = 116
+const billID = "hr502"
+const response =  await propublicaAPI.Bills
+  .congress(congress)
+  .show(billID)
   .fetch()
 ```

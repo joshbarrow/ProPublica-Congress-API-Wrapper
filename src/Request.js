@@ -18,7 +18,9 @@ export default class Request {
 
   get defaultParams() {
     return {
-      offset: this.query.offset
+      offset: this.query.offset,
+      sort: this.query.sort,
+      dir: this.query.dir,
     }
   }
 

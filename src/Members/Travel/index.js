@@ -1,5 +1,5 @@
 import Request from './Request'
-import Resource from '../Resource'
+import Resource from '../../Resource'
 
 export default class Travel extends Resource {
   constructor(apiKey, config){

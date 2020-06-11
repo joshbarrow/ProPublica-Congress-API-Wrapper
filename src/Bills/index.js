@@ -1,67 +1,62 @@
 import Request from './Request'
 import Resource from '../Resource'
+import Subjects from './Subjects'
 
 export default class Bills extends Resource {
   constructor(apiKey, config){
     super(apiKey, Request, config)
+    this.Subjects = new Subjects(apiKey, config)
   }
 
   get mode() {
-    if (this._mode) return this._mode
-    if (this.query.id) return "show"
+    const {
+      query,
+      congress,
+      chamber,
+      billID,
+      type,
+      subject,
+      memberID,
+    } = this.query
 
-    return "search"
+    if (query) return "search"
+    if (congress && chamber && type) return "recent"
+    if (memberID && type) return "byMember"
+    if (subject) return "bySubject"
+    if (chamber) return "upcoming"
+    if (this._mode) return this._mode
+
   }
 
-  search(query, sort, dir) {
-    this._mode = "search"
-    this.query.query = query
-    this.query.sort = sort
-    this.query.dir = dir
+  show(billID) {
+    if (memberID) return this._mode = "show"
+    this.query.billID = billID
     return this
   }
 
-  recent({ type, member, subject }) {
-    this._mode = "recent"
-    this.query.type = type || "introduced"
-    this.query.memberID = member
+  search(query) {
+    this.query.query = query
+    return this
+  }
+
+  recent(type, memberID, subject) {
+    this.query.memberID = memberID
     this.query.subject = subject
     return this
   }
 
-  upcoming() {
-    this._mode = "upcoming"
-    return this
-  }
-
-  show(billID) {
-    this._mode = "show"
-    this.query.billID = billID
-    return this
-  }
-
-  amendments(billID) {
+  amendments(congress) {
     this._mode = "amendments"
-    this.query.billID = billID
     return this
   }
 
-  cosponsors(billID) {
+  cosponsors() {
     this._mode = "cosponsors"
-    this.query.billID = billID
     return this
   }
 
-  subjects({ bill, query }) {
-    this._mode = "subjects"
-    this.query.billID = bill
-    this.query.query = query || ""
-    return this
-  }
-
-  related(billID) {
+  related() {
     this._mode = "related"
-    this.query.billID = billID
     return this
   }
 }

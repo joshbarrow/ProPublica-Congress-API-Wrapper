@@ -28,8 +28,8 @@ export default class Request extends PropublicaRequest {
       response = await this.fetchShow(congress, billID)
       break
 
-    case "specificBillSubject":
-      response = await this.fetchSpecificBillSubject(subject)
+    case "bySubject":
+      response = await this.fetchBySubject(subject)
       break
 
     case "amendments":
@@ -40,13 +40,6 @@ export default class Request extends PropublicaRequest {
       response = await this.fetchCosponsors(congress, billID)
       break
 
-    case "subjects":
-      if (billID)
-        response = await this.fetchSubjectsByBill(congress, billID)
-      else
-        response = await this.fetchSubjectsByTerm(query)
-      break
-
     case "related":
       response = await this.fetchRelated(congress, billID)
       break
@@ -55,16 +48,9 @@ export default class Request extends PropublicaRequest {
       response = await this.fetchUpcoming(chamber)
       break
 
-    case "recent":
-      if (memberID)
-        response = await this.fetchRecentByMember(memberID, type)
-      else if (type)
-        response = await this.fetchRecentByType(congress, chamber, type)
-      else if (subject)
-        response = await this.fetchRecentBySubject(subject)
+    case "byMember":
+      response = await this.fetchByMember(memberID, type)
       break
-
-
 
     default:
       throw new ModeNotSet()
@@ -113,12 +99,12 @@ export default class Request extends PropublicaRequest {
     return this.request.response = responseFull.data.results
   }
 
-  async fetchRecentByMember(memberID, type) {
+  async fetchByMember(memberID, type) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${memberID}/bills/${type}.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchRecentBySubject(subject) {
+  async fetchBySubject(subject) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/bills/subjects/${subject}.json`)
     return this.request.response = responseFull.data.results
   }

@@ -1,9 +1,13 @@
 import Request from './Request'
 import Resource from '../Resource'
+import OfficeExpenses from './OfficeExpenses'
+import Travel from './Travel'
 
 export default class Members extends Resource {
   constructor(apiKey, config){
     super(apiKey, Request, config)
+    this.OfficeExpenses = new OfficeExpenses(apiKey, config)
+    this.Travel = new Travel(apiKey, config)
   }
 
   get mode() {

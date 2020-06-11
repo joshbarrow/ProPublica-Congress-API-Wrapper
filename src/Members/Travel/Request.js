@@ -1,6 +1,6 @@
 import moment from 'moment'
-import PropublicaRequest from '../Request'
-import ModeNotSet from '../Exceptions/ModeNotSet'
+import PropublicaRequest from '../../Request'
+import ModeNotSet from '../../Exceptions/ModeNotSet'
 
 export default class Request extends PropublicaRequest {
 

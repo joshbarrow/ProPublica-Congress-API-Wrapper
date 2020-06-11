@@ -60,6 +60,11 @@ export default class Resource {
     return this
   }
 
+  subject(subject) {
+    this.query.subject = subject
+    return this
+  }
+
   chamber(chamber) {
     this.query.chamber = chamber
     return this
@@ -67,6 +72,17 @@ export default class Resource {
 
   year(year) {
     this.query.year = year
+    return this
+  }
+
+  bill(billID) {
+    this.query.billID = billID
+    return this
+  }
+
+  sort(field, dir) {
+    this.query.dir = dir || this.query.dir
+    this.query.sort = field
     return this
   }
 
@@ -80,8 +96,18 @@ export default class Resource {
     return this
   }
 
+  type(type) {
+    this.query.type = type
+    return this
+  }
+
   month(month) {
     this.query.month = month
+    return this
+  }
+
+  search(query) {
+    this.query.query = query
     return this
   }
 }
