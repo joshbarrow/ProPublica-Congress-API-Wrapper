@@ -46,17 +46,6 @@ export default class Request extends PropublicaRequest {
       response = await this.fetchLeaving(congress, chamber)
       break
 
-    case "expenses":
-      if (year)
-        response = await this.fetchExpenses(id, year, quarter)
-      else if (category)
-        response = await this.fetchExpensesByCategory(id, category)
-      break
-
-    case "officeExpenses":
-      response = await this.fetchOfficeExpenses(category, year, quarter)
-      break
-
     case "compareVotes":
       response = await this.fetchVoteComparison(firstMemberID, secondMemberID, congress, chamber)
       break

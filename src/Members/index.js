@@ -98,12 +98,6 @@ export default class Members extends Resource {
     return this
   }
 
-  privateTravel({ id, congress }) {
-    this._mode = "privateTravel"
-    this.query.id = id
-    this.query.congress = congress
-    return this
-  }
 
   votes(id) {
     this._mode = "votes"

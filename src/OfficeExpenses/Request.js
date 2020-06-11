@@ -10,7 +10,7 @@ export default class Request extends PropublicaRequest {
       chamber,
       state,
       party,
-      id,
+      memberID,
       year,
       quarter,
       category,
@@ -22,20 +22,16 @@ export default class Request extends PropublicaRequest {
       response = await this.fetchNew()
       break
 
-
-    case "memberExpenses":
-      if (year)
-        response = await this.fetchExpenses(id, year, quarter)
-      else if (category)
-        response = await this.fetchExpensesByCategory(id, category)
+    case "quarterlyByMember":
+      response = await this.fetchQuarterlyByMember(memberID, year, quarter)
       break
 
-    case "officeExpenses":
-      response = await this.fetchOfficeExpenses(category, year, quarter)
+    case "categoricallyByMember":
+      response = await this.fetchCategoricallyByMember(memberID, category)
       break
 
-    case "index":
-      response = await this.fetchAll(congress, chamber, { party, state })
+    case "byCategory":
+      response = await this.fetchByCategory(category, year, quarter)
       break
 
     default:
@@ -45,17 +41,17 @@ export default class Request extends PropublicaRequest {
     return response
   }
 
-  async fetchMemberExpenses(id, year, quarter) {
+  async fetchQuarterlyByMember(id, year, quarter) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/office_expenses/${year}/${quarter}.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchExpensesByCategory(id, category) {
+  async fetchCategoricallyByMember(id, category) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}/office_expenses/category/${category}.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchOfficeExpenses(category, year, quarter) {
+  async fetchByCategory(category, year, quarter) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/office_expenses/category/${category}/${year}/${quarter}.json`)
     return this.request.response = responseFull.data.results
   }

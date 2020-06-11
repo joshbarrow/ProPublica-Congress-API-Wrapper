@@ -6,6 +6,7 @@ import CommitteeStatements from './CommitteeStatements'
 import Committees from './Committees'
 import Communications from './Communications'
 import OfficeExpenses from './OfficeExpenses'
+import Travel from './Travel'
 
 export default class PropublicaAPI {
   constructor(apiKey, config) {
@@ -17,5 +18,6 @@ export default class PropublicaAPI {
     this.Committees = new Committees(apiKey, config)
     this.Communications = new Communications(apiKey, config)
     this.OfficeExpenses = new OfficeExpenses(apiKey, config)
+    this.Travel = new Travel(apiKey, config)
   }
 }

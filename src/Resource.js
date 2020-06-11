@@ -72,6 +72,12 @@ export default class Resource {
 
   member(memberID) {
     this.query.memberID = memberID
+    return this
+  }
+
+  quarter(quarter) {
+    this.query.quarter = quarter
+    return this
   }
 
   month(month) {

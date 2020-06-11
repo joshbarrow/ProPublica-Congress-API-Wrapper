@@ -7,25 +7,14 @@ export default class OfficeExpenses extends Resource {
   }
 
   get mode() {
-    if (this._mode) return this._mode
-
-    return "index"
-  }
-
-  memberExpenses({id, year, quarter, category}) {
-    this._mode = "expenses"
-    this.query.id = id
-    this.query.year = year
-    this.query.quarter = quarter
-    this.query.category = category || this.query.category
-    return this
-  }
-
-  officeExpenses(year, quarter, category) {
-    this._mode = "officeExpenses"
-    this.query.category = category || this.query.category
-    this.query.year = year
-    this.query.quarter = quarter
-    return this
+    const {
+      memberID,
+      year,
+      quarter,
+      category
+    } = this.query
+    if (memberID && year && quarter) return "quarterlyByMember"
+    if (memberID && category) return "categoricallyByMember"
+    if (category && year && quarter) return "byCategory"
   }
 }
