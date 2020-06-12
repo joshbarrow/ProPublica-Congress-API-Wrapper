@@ -1,7 +1,7 @@
 import Members from './Members'
 import Bills from './Bills'
 import Votes from './Votes'
-import CongressionalStatements from './CongressionalStatements'
+import Statements from './Statements'
 import CommitteeStatements from './CommitteeStatements'
 import Committees from './Committees'
 import Communications from './Communications'
@@ -11,7 +11,7 @@ export default class PropublicaAPI {
     this.Members = new Members(apiKey, config)
     this.Bills = new Bills(apiKey, config)
     this.Votes = new Votes(apiKey, config)
-    this.CongressionalStatements = new CongressionalStatements(apiKey, config)
+    this.Statements = new Statements(apiKey, config)
     this.CommitteeStatements = new CommitteeStatements(apiKey, config)
     this.Committees = new Committees(apiKey, config)
     this.Communications = new Communications(apiKey, config)

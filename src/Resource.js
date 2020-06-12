@@ -86,6 +86,11 @@ export default class Resource {
     return this
   }
 
+  committee(committeeID) {
+    this.query.committeeID = committeeID
+    return this
+  }
+
   member(memberID) {
     this.query.memberID = memberID
     return this
@@ -98,6 +103,11 @@ export default class Resource {
 
   type(type) {
     this.query.type = type
+    return this
+  }
+
+  term(term) {
+    this.query.term = term
     return this
   }
 

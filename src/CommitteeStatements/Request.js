@@ -15,15 +15,15 @@ export default class Request extends PropublicaRequest {
     switch(mode) {
 
     case "recent":
-      response = await this.fetchWithinCommittee()
+      response = await this.fetchRecent()
       break
 
     case "on":
-      response = await this.fetchWithinCommitteeByDate(date)
+      response = await this.fetchByDate(date)
       break
 
     case "search":
-      response = await this.fetchWithinCommitteeByTerm(term)
+      response = await this.fetchSearch(term)
       break
 
     case "byCommittee":
@@ -37,17 +37,17 @@ export default class Request extends PropublicaRequest {
     return response
   }
 
-  async fetchWithinCommittee() {
+  async fetchRecent() {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/statements/committees/latest.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchWithinCommitteeByDate(date) {
+  async fetchByDate(date) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/statements/committees/date/${date}.json`)
     return this.request.response = responseFull.data.results
   }
 
-  async fetchWithinCommitteeByTerm(term) {
+  async fetchSearch(term) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/statements/committees/search.json?query=${term}`)
     return this.request.response = responseFull.data.results
   }
