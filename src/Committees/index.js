@@ -6,32 +6,25 @@ export default class Committees extends Resource {
     super(apiKey, Request, config)
   }
 
-  index() {
-    this._mode = "index"
-    return this
+  get mode() {
+    const {
+      congress,
+      chamber,
+      committeeID,
+      subcommitteeID
+    } = this.query
+
+    if (this._mode) return this._mode
+    if (congress && chamber && committeeID && subcommitteeID) return "subcommittee"
+    if (congress && chamber && committeeID) return "hearingsByCommittee"
+    if (congress && chamber) return "index"
+    if (congress) return "hearings"
+
   }
 
   show(committeeID) {
     this._mode = "show"
     this.query.committeeID = committeeID
-    return this
-  }
-
-  hearings(committeeID) {
-    this._mode = "hearings"
-    if (committeeID) {
-      this.query.committeeID = committeeID
-      this._mode = "hearingsByCommittee"
-    } else {
-      this._mode = "hearings"
-    }
-    return this
-  }
-
-  subcommittee(committeeID, subcommitteeID ) {
-    this._mode = "subcommittee"
-    this.query.committeeID = committeeID
-    this.query.subcommitteeID = subcommitteeID
     return this
   }
 }

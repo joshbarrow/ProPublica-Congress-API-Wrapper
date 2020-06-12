@@ -31,7 +31,7 @@ export default class extends PropublicaRequest {
       break
 
     case "subcommittee":
-      response = await this.fetchSubcommittee(committeeID, subcommitteeID, congress, chamber)
+      response = await this.fetchSubcommittee(congress, chamber, committeeID, subcommitteeID)
       break
 
     default: throw new ModeNotSet()
@@ -60,8 +60,9 @@ export default class extends PropublicaRequest {
     return this.request.response = responseFull.data.results
   }
 
-  async fetchSubcommittee(committeeID, subcommitteeID, congress, chamber) {
+  async fetchSubcommittee(congress, chamber, committeeID, subcommitteeID) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/${chamber}/committees/${committeeID}/subcommittees/${subcommitteeID}.json`)
+    console.log(subcommitteeID);
     return this.request.response = responseFull.data.results
   }
 }
