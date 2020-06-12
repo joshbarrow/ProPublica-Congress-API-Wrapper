@@ -44,21 +44,6 @@ export default class Request extends PropublicaRequest {
       response = await this.fetchByNomination(congress)
       break
 
-    case "explanations":
-      if (congress && votes && !memberID && !category)
-        response = await this.fetchPersonalExplanationVotes(congress, votes, offset)
-      else if (memberID && congress && votes)
-        response = await this.fetchMemberExplanationVotes(memberID, congress)
-      else if (memberID && congress && category)
-        response = await this.fetchMemberExplanationVotesByCategory(memberID, congress, category)
-      else if (memberID && congress && category)
-        response = await this.fetchPersonalExplanationVotesByCategory(congress, category, offset)
-      else if (memberID && congress)
-        response = await this.fetchMemberExplanation(memberID, congress)
-      else if (congress)
-        response = await this.fetchPersonalExplanations(congress, offset)
-      break
-
       default:
         throw new ModeNotSet()
     }
@@ -91,36 +76,6 @@ export default class Request extends PropublicaRequest {
 
   async fetchByNomination(congress) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/nominations.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchPersonalExplanations(congress, offset) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/explanations.json`, { offset })
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchPersonalExplanationVotes(congress, offset) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/explanations/votes.json`, { offset })
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchPersonalExplanationVotesByCategory(congress, category) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/explanations/votes/${category}.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchMemberExplanation(memberID, congress) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${memberID}/explanations/${congress}.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchMemberExplanationVotes(memberID, congress, votes) {
-    const responseFull = await this.send(`GET https://api.propublica.org/congress/v1/members/${memberID}/explanations/${congress}/votes.json`)
-    return this.request.response = responseFull.data.results
-  }
-
-  async fetchMemberExplanationVotesByCategory(memberID, congress, category) {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${memberID}/explanations/${congress}/votes/${category}.json`)
     return this.request.response = responseFull.data.results
   }
 }
