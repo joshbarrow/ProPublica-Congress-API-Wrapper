@@ -23,12 +23,12 @@ export default class Request extends PropublicaRequest {
     let response
     switch(mode) {
 
-    case "recent":
+    case "index":
       if (!chamber) throw new ChamberNotSet()
       response = await this.fetchRecent(chamber, offset)
       break
 
-    case "byRollCall":
+    case "rollCall":
       response = await this.fetchRollCall(sessionNumber, rollCallNumber, congress, chamber)
       break
 
@@ -40,8 +40,8 @@ export default class Request extends PropublicaRequest {
       response = await this.fetchByDate(chamber, year, month, before, after)
       break
 
-    case "nominations":
-      response = await this.fetchNominations(congress)
+    case "byNomination":
+      response = await this.fetchByNomination(congress)
       break
 
     case "explanations":
@@ -72,11 +72,16 @@ export default class Request extends PropublicaRequest {
     return this.request.response = responseFull.data.results
   }
 
-  async fetchByRollCall(sessionNumber, rollCallNumber, congress, chamber) {
+  async fetchRollCall(sessionNumber, rollCallNumber, congress, chamber) {
     const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/${chamber}/sessions/${sessionNumber}/votes/${rollCallNumber}.json`)
     return this.request.response = responseFull.data.results
-
   }
+
+  async fetchByType(congress, chamber, type) {
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/${chamber}/votes/${type}.json`)
+    return this.request.response = responseFull.data.results
+  }
+
   async fetchByDate(chamber, year, month, before, after) {
     const date1 = year ? year : before
     const date2 = year ? month : after
@@ -84,8 +89,8 @@ export default class Request extends PropublicaRequest {
     return this.request.response = responseFull.data.results
   }
 
-  async fetchNominations(congress) {
-    const responseFull = await this.send(`ttps://api.propublica.org/congress/v1/${congress}/nominations.json`)
+  async fetchByNomination(congress) {
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/${congress}/nominations.json`)
     return this.request.response = responseFull.data.results
   }
 

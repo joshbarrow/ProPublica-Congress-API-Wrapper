@@ -101,6 +101,16 @@ export default class Resource {
     return this
   }
 
+  sessionNumber(sessionNumber) {
+    this.query.sessionNumber = sessionNumber
+    return this
+  }
+
+  rollCallNumber(rollCallNumber) {
+    this.query.rollCallNumber = rollCallNumber
+    return this
+  }
+
   month(month) {
     this.query.month = month
     return this
