@@ -65,11 +65,6 @@ export default class Resource {
     return this
   }
 
-  subcommittee(subcommitteeID) {
-    this.query.subcommitteeID = subcommitteeID
-    return this
-  }
-
   chamber(chamber) {
     this.query.chamber = chamber
     return this

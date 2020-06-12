@@ -2,12 +2,14 @@ import Request from './Request'
 import Resource from '../Resource'
 import Communications from './Communications'
 import Hearings from './Hearings'
+import Subcommittees from './Subcommittees'
 
 export default class Committees extends Resource {
   constructor(apiKey, config){
     super(apiKey, Request, config)
     this.Communications = new Communications(apiKey, config)
     this.Hearings = new Hearings(apiKey, config)
+    this.Subcommittees = new Subcommittees(apiKey, config)
   }
 
   get mode() {
