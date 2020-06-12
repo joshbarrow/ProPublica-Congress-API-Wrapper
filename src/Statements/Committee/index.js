@@ -1,7 +1,7 @@
 import Request from './Request'
-import Resource from '../Resource'
+import Resource from '../../Resource'
 
-export default class CommitteeStatements extends Resource {
+export default class Committee extends Resource {
   constructor(apiKey, config){
     super(apiKey, Request, config)
   }

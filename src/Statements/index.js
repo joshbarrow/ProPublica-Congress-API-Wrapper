@@ -1,9 +1,11 @@
 import Request from './Request'
 import Resource from '../Resource'
+import Committee from './Committee'
 
 export default class Statements extends Resource {
   constructor(apiKey, config){
     super(apiKey, Request, config)
+    this.Committee = new Committee(apiKey, config)
   }
 
   get mode() {

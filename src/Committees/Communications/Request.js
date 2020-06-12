@@ -1,5 +1,5 @@
-import PropublicaRequest from '../Request'
-import ModeNotSet from '../Exceptions/ModeNotSet'
+import PropublicaRequest from '../../Request'
+import ModeNotSet from '../../Exceptions/ModeNotSet'
 
 export default class extends PropublicaRequest {
 
@@ -14,15 +14,15 @@ export default class extends PropublicaRequest {
     let response
 
     switch(mode) {
-    case "category":
+    case "byCategory":
       response = await this.fetchByCategory(congress, category)
       break
 
-    case "chamber":
+    case "byChamber":
       response = await this.fetchByChamber(congress, chamber)
       break
 
-    case "date":
+    case "byDate":
       response = await this.fetchByDate(date)
       break
 

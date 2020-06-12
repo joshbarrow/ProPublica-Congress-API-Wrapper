@@ -16,5 +16,8 @@ export default class OfficeExpenses extends Resource {
     if (memberID && year && quarter) return "quarterlyByMember"
     if (memberID && category) return "categoricallyByMember"
     if (category && year && quarter) return "byCategory"
+
+    throw new ModeNotSet()
+
   }
 }
