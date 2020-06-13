@@ -11,8 +11,9 @@ export default class Request extends PropublicaRequest {
       state,
       party,
       district,
-      id,
+      memberID,
       type,
+      id,
       firstMemberID,
       secondMemberID,
       year,
@@ -93,8 +94,8 @@ export default class Request extends PropublicaRequest {
     })
   }
 
-  async fetchOne() {
-    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${this.id}.json`)
+  async fetchOne(id) {
+    const responseFull = await this.send(`https://api.propublica.org/congress/v1/members/${id}.json`)
     return this.request.response = responseFull.data.results
   }
 
