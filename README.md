@@ -18,8 +18,7 @@
   - [Get Quarterly Office Expenses for a Specified Category](#get-quarterly-office-expenses-for-a-specified-category)
 - [Privately Funded Travel](#privately-funded-travel)
   - [Get Recent Privately Funded Trips](#get-recent-privately-funded-trips)
-
-    - [Get Recent Privately Funded Trips by a Specific House Member](#get-recent-privately-funded-trips-by-a-specific-house-member)
+  - [Get Recent Privately Funded Trips by a Specific House Member](#get-recent-privately-funded-trips-by-a-specific-house-member)
 - [Bills](#bills)
   - [Get Recent Bills](#get-recent-bills)
   - [Get Recent Bills by a Specific Member](#get-recent-bills-by-a-specific-member)
