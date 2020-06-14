@@ -6,16 +6,16 @@
   - [Index](#index)
   - [Get a Specific Member](#get-a-specific-member)
   - [Get New Members](#get-new-members)
-  - [Get Current Members by State/District](#get-current-members-by-state-district)
+  - [Get Current Members by State and District](#get-current-members-by-state-and-district)
   - [Get Members Leaving Office](#get-members-leaving-office)
-  - [Get a Specific Member's Vote Positions](#get-a-specific-member-s-vote-positions)
-  - [Compare Two Members Vote Positions](#compare-two-members-vote-positions)
-  - [Compare Two Members' Bill Sponsorships](#compare-two-members--bill-sponsorships)
+  - [Get Specific Member Vote Positions](#get-specific-member-vote-positions)
+  - [Compare Two Member Vote Positions](#compare-two-member-vote-positions)
+  - [Compare Member Bill Sponsorships](#compare-member-bill-sponsorships)
   - [Get Bills Cosponsored by a Specific Member](#get-bills-cosponsored-by-a-specific-member)
 - [Office Expenses](#office-expenses)
   - [Get Quarterly Office Expenses by a Specific House Member](#get-quarterly-office-expenses-by-a-specific-house-member)
-  - [Get Quarterly Office Expenses by Category for a Specific House Member](#get-quarterly-office-expenses-by-category-for-a-specific-house-member) 
-  - [Get Quarterly Office Expenses for a Specified Category](#get-quarterly-office-expenses-for-a-specified-category)
+  - [Get Quarterly Office Expenses by Category for a Specific House Member](#get-quarterly-office-expenses-by-category-for-a-specific-house-member)
+   - [Get Quarterly Office Expenses for a Specified Category](#get-quarterly-office-expenses-for-a-specified-category)
 - [Privately Funded Travel](#privately-funded-travel)
   - [Get Recent Privately Funded Trips](#get-recent-privately-funded-trips)
   - [Get Recent Privately Funded Trips by a Specific House Member](#get-recent-privately-funded-trips-by-a-specific-house-member)
@@ -43,12 +43,37 @@
   - [Get Recent Personal Explanations by a Specific Member](#get-recent-personal-explanations-by-a-specific-member)
   - [Get Recent Personal Explanation Votes by a Specific Member](#get-recent-personal-explanation-votes-by-a-specific-member)
   - [Get Recent Personal Explanation Votes by a Specific Member by Category](#get-recent-personal-explanation-votes-by-a-specific-member-by-category)
+- [Congressional Statements](#congressional-statements)
+  - [Get Recent Congressional Statements](#get-recent-congressional-statements)
+  - [Get Congressional Statements by Date](#get-congressional-statements-by-date)
+  - [Get Congressional Statements by Search Term](#get-congressional-statements-by-search-term)
+  - [Get Statement Subjects](#get-statement-subjects)
+  - [Get Congressional Statements by Subject](#get-congressional-statements-by-subject)
+  - [Get Congressional Statements by Member](#get-congressional-statements-by-member)
+  - [Get Congressional Statements by Bill](#get-congressional-statements-by-bill)
+- [Congressional Committee Statements](#congressional-committee-statements)
+  - [Get Recent Congressional Committee Statements](#get-recent-congressional-committee-statements)
+  - [Get Congressional Committee Statements by Date](#get-congressional-committee-statements-by-date)
+  - [Get Congressional Committee Statements by Committee](#get-congressional-committee-statements-by-committee)
+  - [Get Congressional Committee Statements by Search Term](#get-congressional-committee-statements-by-search-term)
+- [Committees](#committees)
+  - [Lists of Committees](#lists-of-committees)
+  - [Get a Specific Committee](#get-a-specific-committee)
+  - [Get Recent Committee Hearings](#get-recent-committee-hearings)
+  - [Get Hearings for a Specific Committee](#get-hearings-for-a-specific-committee)
+  - [Get a Specific Subcommittee](#get-a-specific-subcommittee)
+  - [Get a Specific Subcommittee](#get-a-specific-subcommittee-1)
+- [Official Communications](#official-communications)
+  - [Get Recent Official Communications](#get-recent-official-communications)
+  - [Get Recent Official Communications by Category](#get-recent-official-communications-by-category)
+  - [Get Recent Official Communications by Date](#get-recent-official-communications-by-date)
+  - [Get Recent Official Communications by Date](#get-recent-official-communications-by-date-1)
 
 # Introduction
 
-A wrapper for the ProPublica API
+A wrapper for the ProPublica Congress API
 
-> Unit tests and TypeScript implementation in progress. Anticipated completion by November 2020.
+> Unit tests and TypeScript implementation in progress. Anticipated completion by November 2020\.
 
 # Initialization
 
@@ -142,7 +167,7 @@ const response =  await propublicaAPI.Members
   .fetch()
 ```
 
-## Get Current Members by State/District
+## Get Current Members by State and District
 
 ### Params:
 
@@ -201,7 +226,7 @@ const response =  await propublicaAPI.Members
   .fetch()
 ```
 
-## Get a Specific Member's Vote Positions
+## Get Specific Member Vote Positions
 
 ### Params:
 
@@ -220,7 +245,7 @@ const response =  await propublicaAPI.Members
   .fetch()
 ```
 
-## Compare Two Members Vote Positions
+## Compare Two Member Vote Positions
 
 ### Params:
 
@@ -242,7 +267,7 @@ const response =  await propublicaAPI.Members
   .fetch()
 ```
 
-## Compare Two Members' Bill Sponsorships
+## Compare Member Bill Sponsorships
 
 ### Params:
 
@@ -489,7 +514,7 @@ const response =  await propublicaAPI.Bills
   .fetch()
 ```
 
-### Get Upcoming Bills
+## Get Upcoming Bills
 
 ### Params:
 
@@ -1097,7 +1122,6 @@ const response =  await propublicaAPI.CommitteeStatements
 const date = "2019-07-02"
 const response =  await propublicaAPI.CommitteeStatements
   .on(date)
-  .recent()
   .fetch()
 ```
 
@@ -1109,7 +1133,7 @@ const response =  await propublicaAPI.CommitteeStatements
 
 #### URL:
 
-`hhttps://api.propublica.org/congress/v1/statements/committees/{committeeID}.json`
+`https://api.propublica.org/congress/v1/statements/committees/{committeeID}.json`
 
 #### Example:
 
@@ -1117,6 +1141,245 @@ const response =  await propublicaAPI.CommitteeStatements
 const committeeID = "HSRU"
 const response =  await propublicaAPI.CommitteeStatements
   .committee(committeeID)
-  .recent()
+  .fetch()
+```
+
+## Get Congressional Committee Statements by Search Term
+
+### Params:
+
+**term:** search term **offset:** The API returns the 20 most recent statements published on congressional websites and supports pagination using an `offset` URI parameter set to multiples of 20.
+
+#### URL:
+
+`https://api.propublica.org/congress/v1/statements/committees/search.json?query={term}`
+
+#### Example:
+
+```javascript
+const term = "cryptocurrency"
+const response =  await propublicaAPI.CommitteeStatements
+  .term(term)
+  .offset(20)
+  .fetch()
+```
+
+# Committees
+
+Wrapper around the Committees ProPublica API. More details can be found [here](https://projects.propublica.org/api-docs/congress-api/committees/)
+
+## Lists of Committees
+
+### Params:
+
+**congress:** 110-116 **chamber:** `house`, `senate` or `joint`
+
+#### URL:
+
+`https://api.propublica.org/congress/v1/{congress}/{chamber}/committees.json`
+
+#### Example:
+
+```javascript
+const congress = 115
+const chamber = "house"
+const response =  await propublicaAPI.Committees
+  .congress(congress)
+  .chamber(chamber)
+  .fetch()
+```
+
+## Get a Specific Committee
+
+### Params:
+
+**congress:** 110-116 **chamber:** `house`, `senate` or `joint` **committeeID:** Committee abbreviation, for example `HSAG`. Use the full committees response to find abbreviations.
+
+#### URL:
+
+`https://api.propublica.org/congress/v1/{congress}/{chamber}/committees/{committeeID}.json`
+
+#### Example:
+
+```javascript
+const congress = 115
+const chamber = "senate"
+const committeeID = "SSAF"
+const response =  await propublicaAPI.Committees
+  .congress(congress)
+  .chamber(chamber)
+  .show(committeeID)
+  .fetch()
+```
+
+## Get Recent Committee Hearings
+
+### Params:
+
+**congress:** 114-116 **offset:** The API returns the first 20 results ordered by date and supports pagination using an `offset` URI parameter set to multiples of 20.
+
+#### URL:
+
+`https://api.propublica.org/congress/v1/{congress}/committees/hearings.json`
+
+#### Example:
+
+```javascript
+const congress = 116
+const response =  await propublicaAPI.Committees.Hearings
+  .congress(congress)
+  .fetch()
+```
+
+## Get Hearings for a Specific Committee
+
+### Params:
+
+**congress:** 114-116 **chamber:** `house` or `senate` **offset:** The API returns the first 20 results and supports pagination using an `offset` URI parameter set to multiples of 20.
+
+#### URL:
+
+`https://api.propublica.org/congress/v1/{congress}/{chamber}/committees/{committeeID}/hearings.json`
+
+#### Example:
+
+```javascript
+const congress = 116
+const chamber = "house"
+const committeeID = "HSRU"
+const response =  await propublicaAPI.Committees.Hearings
+  .congress(congress)
+  .chamber(chamber)
+  .committee(committeeID)
+  .fetch()
+```
+
+## Get a Specific Subcommittee
+
+### Params:
+
+**congress:** 114-116 **chamber:** `house` or `senate` **committeeID:** Committee abbreviation, for example `HSAG`. Use the full committees response to find abbreviations. **subcommitteeID:** Committee abbreviation, for example `HSAG`. Use the full committees response to find abbreviations.
+
+#### URL:
+
+`https://api.propublica.org/congress/v1/{congress}/{chamber}/committees/{committeeID}/subcommittees/{subcommitteeID}.json`
+
+#### Example:
+
+```javascript
+const congress = 116
+const chamber = "house"
+const committeeID = "HSRU"
+const subcommitteeID = "HSAS28"
+const response =  await propublicaAPI.Committees.Subcommittees
+  .congress(congress)
+  .chamber(chamber)
+  .committee(committeeID)
+  .subcommittee(subcommitteeID)
+  .fetch()
+```
+
+## Get a Specific Subcommittee
+
+### Params:
+
+**congress:** 114-116 **chamber:** `house` or `senate` **committeeID:** Committee abbreviation, for example `HSAG`. Use the full committees response to find abbreviations. **subcommitteeID:** Committee abbreviation, for example `HSAG`. Use the full committees response to find abbreviations.
+
+#### URL:
+
+`https://api.propublica.org/congress/v1/{congress}/{chamber}/committees/{committeeID}/subcommittees/{subcommitteeID}.json`
+
+#### Example:
+
+```javascript
+const congress = 116
+const chamber = "house"
+const committeeID = "HSRU"
+const subcommitteeID = "HSAS28"
+const response =  await propublicaAPI.Committees.Subcommittees
+  .congress(congress)
+  .chamber(chamber)
+  .committee(committeeID)
+  .subcommittee(subcommitteeID)
+  .fetch()
+```
+
+# Official Communications
+
+Wrapper around the Congressional Official Communications ProPublica API. More details can be found [here](https://projects.propublica.org/api-docs/congress-api/committees/#official-communications)
+
+## Get Recent Official Communications
+
+### Params:
+
+**congress:** 114-116 for House, 96-116 for Senate
+
+#### URL:
+
+`https://api.propublica.org/congress/v1/{congress}/communications.json`
+
+#### Example:
+
+```javascript
+const response =  await propublicaAPI.Committees.Communications
+  .congress("116")
+  .fetch()
+```
+
+## Get Recent Official Communications by Category
+
+### Params:
+
+**congress:** 114-116 for House, 96-116 for Senate **category:** `ec`, `pm`, `pom`
+
+#### URL:
+
+`https://api.propublica.org/congress/v1/{congress}/communications/category/{category}.json`
+
+#### Example:
+
+```javascript
+const category = "ec"
+const response =  await propublicaAPI.Committees.Communications
+  .congress("116")
+  .category(category)
+  .fetch()
+```
+
+## Get Recent Official Communications by Date
+
+### Params:
+
+**date:** yyyy-mm-dd format
+
+#### URL:
+
+`https://api.propublica.org/congress/v1/communications/date/{date}.json`
+
+#### Example:
+
+```javascript
+const response =  await propublicaAPI.Committees.Communications
+  .on("2018-03-21")
+  .category(category)
+  .fetch()
+```
+
+## Get Recent Official Communications by Date
+
+### Params:
+
+**congress:** 114-116 for House, 96-116 for Senate **chamber:** `house`, `senate`
+
+#### URL:
+
+`https://api.propublica.org/congress/v1/{congress}/communications/{chamber}.json`
+
+#### Example:
+
+```javascript
+const response =  await propublicaAPI.Committees.Communications
+  .congress(115)
+  .chamber("house")
   .fetch()
 ```
